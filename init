@@ -57,15 +57,8 @@ if (empty($params['env'])) {
     }
 }
 
-$rootPath = "$root/environments/{$env['path']}";
-if (!is_dir($rootPath)) {
-    printError("$rootPath directory does not exist. Check path in $envName environment.");
-    exit(3);
-}
-
 echo "\n  Start initialization ...\n\n";
-
-$files = getFileList($rootPath);
+$files = getFileList("$root/environments/{$env['path']}");
 if (isset($env['skipFiles'])) {
     $skipFiles = $env['skipFiles'];
     array_walk($skipFiles, function(&$value) use($env, $root) { $value = "$root/$value"; });
