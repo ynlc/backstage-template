@@ -1,0 +1,14 @@
+{
+    "name": "ynlc/backstage-template",
+    "description": "this is backstage template",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "liheicai",
+            "email": "787512217@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
