@@ -5,7 +5,7 @@ return [
     'username' => 'root',
     'password' => 'root',
     'charset' => 'utf8mb4',
-    'enableSchemaCache' => true,
+    'enableSchemaCache' => false,
     'schemaCacheDuration' => 3600,
     'schemaCache' => 'cache',
     'tablePrefix' => 'bt_',
