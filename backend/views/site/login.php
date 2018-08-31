@@ -65,7 +65,11 @@ AppAsset::register($this);
                 url: url,
                 data: datas.field,
                 success: function (data) {
-                    alert(data);
+                    if(data == 1){
+                        location.href= '<?= Url::to(['site/index'])?>';
+                    }else{
+                        layer.msg('登录失败');
+                    }
                 },
                 error: function (err) {
                     layer.msg('登录失败服务器异常');

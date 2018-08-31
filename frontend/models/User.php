@@ -1,50 +1,59 @@
 <?php
-
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
-use common\models\giiCreated\BtAdminUser;
-use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
-
-
-class CAdminUser extends BtAdminUser implements IdentityInterface
+/**
+ * User model
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $password_hash
+ * @property string $password_reset_token
+ * @property string $email
+ * @property string $auth_key
+ * @property integer $status
+ * @property integer $created_at
+ * @property integer $updated_at
+ * @property string $password write-only password
+ */
+class User extends ActiveRecord implements IdentityInterface
 {
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
+
+
     /**
-     * @inheritdoc
-     * 插入创建者及创建时间/更新者及更新时间
+     * {@inheritdoc}
      */
-    /*public function behaviors()
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
     {
         return [
-            [
-                'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
-            ],
+            TimestampBehavior::className(),
         ];
-    }*/
+    }
+
     /**
-     * 添加管理员
-     * @param $username
-     * @param $password
+     * {@inheritdoc}
      */
-    static public function add($username,$password,$id)
+    public function rules()
     {
-        $model = self::findOne(['id'=>$id]);
-        if(!$model){
-            $model = new self();
-            $model->created_at = time();
-        }
-        $model->username = $username;
-        if($password){
-            $model->setPassword($password);
-            $model->generateAuthKey();
-        }
-        $model->updated_at = time();
-        return $model->save() ? $model->id : false;
+        return [
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        ];
     }
 
     /**
@@ -52,8 +61,7 @@ class CAdminUser extends BtAdminUser implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
-
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -72,7 +80,7 @@ class CAdminUser extends BtAdminUser implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username]);
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -88,7 +96,8 @@ class CAdminUser extends BtAdminUser implements IdentityInterface
         }
 
         return static::findOne([
-            'password_reset_token' => $token
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
         ]);
     }
 

@@ -13,10 +13,10 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     //全局css
     public $css = [
-        //'css/site.css',
+        'static/css/reset.css',
         'static/css/font.css',
         'static/css/weadmin.css',
-        'static/lib/layui/css/layui.css'
+        'static/lib/layui/css/layui.css',
     ];
     //全局js
     public $js = [

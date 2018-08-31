@@ -1,9 +1,9 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\AdminLoginForm;
 use Yii;
 use common\controllers\AdminBaseController;
-use common\models\LoginForm;
 
 /**
  * Site controller
@@ -23,7 +23,6 @@ class SiteController extends AdminBaseController
 
     public function actionWelcome()
     {
-        $this->layout = false;
         return $this->render('welcome');
     }
 
@@ -37,7 +36,7 @@ class SiteController extends AdminBaseController
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        $model = new LoginForm();
+        $model = new AdminLoginForm();
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post(),'info') && $model->login()) {
                 return 1;

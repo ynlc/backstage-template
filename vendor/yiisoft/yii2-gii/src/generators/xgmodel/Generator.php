@@ -36,7 +36,7 @@ class Generator extends \yii\gii\Generator
     public $baseClass = 'yii\db\ActiveRecord';
     public $generateRelations = self::RELATIONS_ALL;
     public $generateRelationsFromCurrentSchema = true;
-    public $generateLabelsFromComments = false;
+    public $generateLabelsFromComments = true;
     public $useTablePrefix = false;
     public $useSchemaName = true;
     public $generateQuery = false;
@@ -284,7 +284,7 @@ class Generator extends \yii\gii\Generator
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated attribute labels (name => label)
      */
-    public function generateLabels($table)
+    /*public function generateLabels($table)
     {
         $labels = [];
         foreach ($table->columns as $column) {
@@ -302,8 +302,21 @@ class Generator extends \yii\gii\Generator
         }
 
         return $labels;
-    }
+    }*/
+    public function generateLabels($table)
+    {
 
+        $labels=array();
+        $sql ="SELECT COLUMN_NAME, COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$table->name'";
+        $res = Yii::$app->getDb()->createCommand($sql)->query();
+        foreach ($res as $column){
+            if (!empty($column['COLUMN_COMMENT']))
+                $labels[$column['COLUMN_NAME']]= $column['COLUMN_COMMENT'];
+            else
+                $labels[$column['COLUMN_NAME']]= $column['COLUMN_NAME'];
+        }
+        return $labels;
+    }
     /**
      * Generates validation rules for the specified table.
      * @param \yii\db\TableSchema $table the table schema

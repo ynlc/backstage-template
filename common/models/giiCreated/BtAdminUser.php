@@ -6,8 +6,8 @@ use Yii;
 /**
  * This is the model class for table "bt_admin_user".
  *
- * @property int $id
- * @property string $username
+ * @property int $id 用户id
+ * @property string $username 用户名称
  * @property string $auth_key
  * @property string $password_hash
  * @property string $password_reset_token
@@ -46,14 +46,14 @@ class BtAdminUser extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => '用户id',
+            'username' => '用户名称',
+            'auth_key' => 'auth_key',
+            'password_hash' => 'password_hash',
+            'password_reset_token' => 'password_reset_token',
+            'status' => 'status',
+            'created_at' => 'created_at',
+            'updated_at' => 'updated_at',
         ];
     }
 }
